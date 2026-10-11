@@ -193,7 +193,7 @@ export async function initGlobe({ canvas, pin, list }) {
   }
   layout();
 
-  let p = reduceMotion ? 1 : 0, target = p, running = false, visible = false, raf = 0;
+  let p = reduceMotion ? 1 : 0, running = false, visible = false, raf = 0;
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   const onMove = (e) => { mouse.tx = (e.clientX / innerWidth) * 2 - 1; mouse.ty = (e.clientY / innerHeight) * 2 - 1; };
   addEventListener('pointermove', onMove, { passive: true });
@@ -203,9 +203,10 @@ export async function initGlobe({ canvas, pin, list }) {
   const ease = (t) => t * t * (3 - 2 * t);
   function frame() {
     const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
-    p += (target - p) * (1 - Math.exp(-dt * 7));
+    // Plays on its own: arcs draw out and withdraw, the globe swings east → west and back (22 s loop).
+    p = reduceMotion ? 1 : 0.5 - 0.5 * Math.cos((t / 22) * Math.PI * 2);
     mouse.x += (mouse.tx - mouse.x) * (1 - Math.exp(-dt * 4)); mouse.y += (mouse.ty - mouse.y) * (1 - Math.exp(-dt * 4));
-    const swing = 36 * (1 - 2 * ease(Math.min(1, p / 0.95)));              // east → west, in degrees
+    const swing = 36 * (1 - 2 * ease(p));              // east → west, in degrees
     globe.rotation.order = 'XYZ';
     globe.rotation.y = -(HOME.lon + swing) * D2R + mouse.x * 0.07 + Math.sin(t * 0.15) * 0.02;
     globe.rotation.x = (HOME.lat * 0.82) * D2R + mouse.y * 0.05;
@@ -236,7 +237,6 @@ export async function initGlobe({ canvas, pin, list }) {
   clock.start(); frame();
 
   return {
-    setProgress(v) { target = v; if (!running) { p = v; frame(); } },
     setActive(v) { visible = v; reduceMotion ? frame() : sync(); },
     destroy() { stop(); ro.disconnect(); removeEventListener('pointermove', onMove); renderer.dispose(); },
   };

@@ -6,16 +6,19 @@ import { $, $$, reduceMotion } from './env.js';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /** Callbacks the 3D modules plug into (they are lazy-loaded). */
-export const hooks = { world: null, worldActive: null, worldLoad: null };
+export const hooks = { worldActive: null, worldLoad: null };
 
 /* ---- helpers --------------------------------------------------------- */
 
 /** Lines rise out of a mask — a reveal that is about reading order, not a fade. */
-function revealLines(el, { trigger = el, start = 'top 86%', delay = 0, stagger = 0.09, duration = 1.15 } = {}) {
+function revealLines(el, { trigger = el, start = 'top 96%', delay = 0, stagger = 0.08, duration = 0.95 } = {}) {
   if (!el || reduceMotion) return;
   SplitText.create(el, {
     type: 'lines', mask: 'lines', autoSplit: true,
-    onSplit: (self) => gsap.from(self.lines, { yPercent: 118, duration, ease: 'expo.out', stagger, delay, scrollTrigger: { trigger, start, once: true } }),
+    onSplit: (self) => {
+      gsap.set(el, { visibility: 'visible' });   // lines start below their mask, so nothing shows early
+      return gsap.from(self.lines, { yPercent: 118, duration, ease: 'expo.out', stagger, delay, scrollTrigger: { trigger, start, once: true } });
+    },
   });
 }
 
@@ -30,6 +33,7 @@ function setupHero() {
     SplitText.create(title, {
       type: 'lines', mask: 'lines', autoSplit: true,
       onSplit: (self) => {
+        gsap.set(title, { visibility: 'visible' });
         heroTween = gsap.from(self.lines, { yPercent: 118, duration: 1.4, ease: 'expo.out', stagger: 0.11, paused: !heroGo });
         return heroTween;
       },
@@ -48,22 +52,23 @@ export function playHero() {
 /* ---- MANIFESTO ------------------------------------------------------- */
 function setupManifesto() {
   const text = $('[data-mani-text]');
-  if (!reduceMotion) {
-    const sp = SplitText.create(text, { type: 'words', wordsClass: 'w' });
-    gsap.fromTo(sp.words, { color: '#BDBCB6' }, {
-      color: '#141414', ease: 'none', stagger: 0.14,
-      scrollTrigger: { trigger: text, start: 'top 82%', end: 'bottom 48%', scrub: 0.5 },
-    });
-    gsap.from('.mani__tags li', { yPercent: 120, duration: 1, ease: 'expo.out', stagger: 0.08, scrollTrigger: { trigger: '.mani__tags', start: 'top 92%', once: true } });
-  }
+  if (reduceMotion) return;
+  const sp = SplitText.create(text, { type: 'words', wordsClass: 'w' });
+  gsap.set(text, { visibility: 'visible' });
+  // Words are invisible until scrolled to; they ink in while the paragraph travels up the screen.
+  gsap.fromTo(sp.words, { color: 'rgba(20,20,20,0)' }, {
+    color: 'rgb(20,20,20)', ease: 'none', stagger: 0.1,
+    scrollTrigger: { trigger: text, start: 'top 92%', end: 'bottom 62%', scrub: 0.2 },
+  });
+  gsap.fromTo('.mani__tags li', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.mani__tags', start: 'top 96%', once: true } });
 }
 
 /* ---- DIRECTIONS (plain coloured sections) ------------------------------ */
 function setupDirections() {
   $$('[data-dir]').forEach((dir) => {
-    revealLines($('[data-split]', dir), { trigger: dir, start: 'top 75%' });
+    revealLines($('[data-split]', dir), { trigger: dir, start: 'top 88%' });
     if (reduceMotion) return;
-    gsap.from($$('.dir__rows > div, .btn', dir), { y: 28, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: dir, start: 'top 68%', once: true } });
+    gsap.from($$('.dir__rows > div, .btn', dir), { y: 24, autoAlpha: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: dir, start: 'top 82%', once: true } });
   });
 }
 
@@ -108,32 +113,27 @@ function setupResults() {
   });
 }
 
-/* ---- WORLD (globe) ---------------------------------------------------- */
+/* ---- WORLD (globe plays on its own) ----------------------------------- */
 function setupWorld() {
   const world = $('[data-world]');
-  const pin = $('[data-world-pin]');
   ScrollTrigger.create({ trigger: world, start: 'top 260%', once: true, onEnter: () => hooks.worldLoad?.() });
   ScrollTrigger.create({ trigger: world, start: 'top bottom', end: 'bottom top', onToggle: (s) => hooks.worldActive?.(s.isActive) });
-  if (reduceMotion) { hooks.world?.(1); return; }
-  ScrollTrigger.create({
-    trigger: world, start: 'top top', end: '+=130%', pin, scrub: true, anticipatePin: 1,
-    onUpdate: (s) => hooks.world?.(s.progress),
-  });
-  revealLines($('.t1', world), { trigger: world, start: 'top 55%' });
-  gsap.from($('.t2', world), { clipPath: 'inset(0 100% 0 0)', duration: 1.2, ease: 'expo.inOut', delay: 0.2, scrollTrigger: { trigger: world, start: 'top 55%', once: true } });
-  revealLines($('.world__lead', world), { trigger: world, start: 'top 45%', delay: 0.3 });
+  if (reduceMotion) return;
+  revealLines($('.t1', world), { trigger: world, start: 'top 70%' });
+  gsap.from($('.t2', world), { clipPath: 'inset(0 100% 0 0)', duration: 1.1, ease: 'expo.inOut', delay: 0.15, scrollTrigger: { trigger: world, start: 'top 70%', once: true } });
+  revealLines($('.world__lead', world), { trigger: world, start: 'top 60%', delay: 0.25 });
 }
 
 /* ---- TEAM ------------------------------------------------------------- */
 function setupTeam() {
   const people = $$('[data-person]');
   people.forEach((p) => {
-    revealLines($('[data-split]', p), { trigger: p, start: 'top 78%' });
+    revealLines($('[data-split]', p), { trigger: p, start: 'top 90%' });
     if (reduceMotion) return;
     const wrap = $('[data-wipe]', p);
     const img = $('img', wrap);
     gsap.set(img, { scale: 1.3 });
-    gsap.timeline({ scrollTrigger: { trigger: p, start: 'top 80%', once: true } })
+    gsap.timeline({ scrollTrigger: { trigger: p, start: 'top 92%', once: true } })
       .to(wrap, { clipPath: 'inset(0 0 0% 0)', duration: 1.5, ease: 'expo.inOut' })
       .to(img, { scale: 1.08, duration: 1.8, ease: 'expo.out' }, '<0.1');
     gsap.to(img, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: p, start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -143,10 +143,10 @@ function setupTeam() {
 /* ---- CONTACT + FOOTER ------------------------------------------------- */
 function setupContact() {
   const title = $('.contact__title');
-  revealLines(title, { trigger: '.contact', start: 'top 62%' });
+  revealLines(title, { trigger: '.contact', start: 'top 80%' });
   if (reduceMotion) return;
   gsap.from('.contact__title em', { rotation: 7, duration: 1.4, ease: 'elastic.out(1, .5)', scrollTrigger: { trigger: '.contact', start: 'top 55%', once: true } });
-  gsap.from(['.contact__sub', ...$$('.crow li'), ...$$('.form > *')], { y: 36, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.contact__grid', start: 'top 82%', once: true } });
+  gsap.from(['.contact__sub', ...$$('.crow li'), ...$$('.form > *')], { y: 36, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.contact__grid', start: 'top 92%', once: true } });
 }
 
 function setupFooter() {

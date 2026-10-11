@@ -21,8 +21,9 @@ import { initSections, playHero, hooks } from './js/sections.js';
 
 gsap.registerPlugin(ScrollTrigger);
 history.scrollRestoration = 'manual';
+if (reduceMotion) document.documentElement.classList.remove('js');
 // Safety net: never leave a visitor behind the preloader if something above fails.
-setTimeout(() => { document.body.classList.remove('is-loading'); $('.pre')?.remove(); }, 9000);
+setTimeout(() => { document.body.classList.remove('is-loading'); $('.pre')?.remove(); if (!window.__geReady) document.documentElement.classList.remove('js'); }, 9000);
 
 const lenis = initSmooth();
 const fontsReady = Promise.all([
@@ -51,8 +52,9 @@ hooks.worldLoad = async () => {
     const { initGlobe } = await import('./js/globe3d.js');
     globe = await initGlobe({ canvas: $('[data-globe-canvas]'), pin: $('[data-world-pin]'), list: $('[data-cities]') });
     if (globe) {
-      hooks.world = (p) => globe.setProgress(p);
       hooks.worldActive = (v) => globe.setActive(v);
+      const r = $('[data-world]').getBoundingClientRect();           // the toggle may have fired before the chunk loaded
+      globe.setActive(r.bottom > 0 && r.top < innerHeight);
     } else { $('[data-globe-canvas]').hidden = true; $('.world__fallback').hidden = false; }
   } catch (err) {
     console.warn('[globe3d] disabled:', err);
@@ -67,6 +69,7 @@ fontsReady.then(() => {
   initForm(lenis);
   initPrivacy(lenis);
   initSections();
+  window.__geReady = true;
   ScrollTrigger.refresh();
   addEventListener('load', () => ScrollTrigger.refresh());
 });
