@@ -90,8 +90,9 @@
     <!-- HERO -->
     <section class="hero" id="top" data-hero>
       <div class="hero__stage" data-hero-stage>
-        <img class="hero__poster" src="/img/hero-poster.webp" alt="" width="1440" height="810" fetchpriority="high">
-        <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
+        <video class="hero__video" data-hero-video autoplay muted loop playsinline preload="auto" poster="/img/hero-poster.webp" aria-hidden="true">
+          <source src="/video/ribbons.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="hero__inner">
         <p class="eyebrow" data-hero-in>+ (Markaz)</p>
@@ -121,7 +122,6 @@
     <!-- DIRECTIONS (sticky stack) -->
     <section class="dirs" id="directions" data-dirs aria-label="Yoʻnalishlar">
       <article class="dir" data-dir style="--bg:#8A3FFC;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
-        <div class="dir__veil" data-veil></div>
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="dir__num" aria-hidden="true">01</p>
@@ -134,12 +134,11 @@
             </dl>
             <a class="btn btn--light" href="#contact" data-scroll data-pick="0" data-magnetic><span>Soʻrov yuborish</span><i class="btn__arrow" aria-hidden="true">→</i></a>
           </div>
-          <div class="dir__art" data-tilt><img src="/img/svc-1.webp" alt="Ingliz tili: A harfi va tarjima misollari" width="1200" height="900" loading="lazy"></div>
+          <div class="dir__art"><img src="/img/svc-1.webp" alt="Ingliz tili: A harfi va tarjima misollari" width="1200" height="900" loading="lazy"></div>
         </div>
       </article>
 
       <article class="dir" data-dir style="--bg:#7A0E1E;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
-        <div class="dir__veil" data-veil></div>
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="dir__num" aria-hidden="true">02</p>
@@ -152,12 +151,11 @@
             </dl>
             <a class="btn btn--light" href="#contact" data-scroll data-pick="1" data-magnetic><span>Soʻrov yuborish</span><i class="btn__arrow" aria-hidden="true">→</i></a>
           </div>
-          <div class="dir__art" data-tilt><img src="/img/svc-2.webp" alt="Toshkentdan dunyo shaharlariga yoʻnalishlar globusi" width="1200" height="900" loading="lazy"></div>
+          <div class="dir__art"><img src="/img/svc-2.webp" alt="Toshkentdan dunyo shaharlariga yoʻnalishlar globusi" width="1200" height="900" loading="lazy"></div>
         </div>
       </article>
 
       <article class="dir" data-dir style="--bg:#FF5B1F;--fg:#111111;--soft:rgba(17,17,17,.2)">
-        <div class="dir__veil" data-veil></div>
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="dir__num" aria-hidden="true">03</p>
@@ -170,12 +168,11 @@
             </dl>
             <a class="btn btn--ink" href="#contact" data-scroll data-pick="2" data-magnetic><span>Soʻrov yuborish</span><i class="btn__arrow" aria-hidden="true">→</i></a>
           </div>
-          <div class="dir__art" data-tilt><img src="/img/svc-3.webp" alt="Imtihon javoblar varaqasi, A+ bahosi" width="1200" height="900" loading="lazy"></div>
+          <div class="dir__art"><img src="/img/svc-3.webp" alt="Imtihon javoblar varaqasi, A+ bahosi" width="1200" height="900" loading="lazy"></div>
         </div>
       </article>
 
       <article class="dir" data-dir style="--bg:#2D4BFF;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
-        <div class="dir__veil" data-veil></div>
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="dir__num" aria-hidden="true">04</p>
@@ -188,7 +185,7 @@
             </dl>
             <a class="btn btn--light" href="#contact" data-scroll data-pick="3" data-magnetic><span>Soʻrov yuborish</span><i class="btn__arrow" aria-hidden="true">→</i></a>
           </div>
-          <div class="dir__art" data-tilt><img src="/img/svc-4.webp" alt="Toshkent — London parvoz talonida «Qabul» muhri" width="1200" height="900" loading="lazy"></div>
+          <div class="dir__art"><img src="/img/svc-4.webp" alt="Toshkent — London parvoz talonida «Qabul» muhri" width="1200" height="900" loading="lazy"></div>
         </div>
       </article>
     </section>

@@ -25,9 +25,9 @@ export function runPreloader(ready) {
     .to(bars, { scaleX: 1, duration: 0.9, ease: 'expo.out', stagger: 0.07 })
     .to(word.children, { yPercent: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06 }, 0.25);
 
-  const minTime = new Promise((r) => setTimeout(r, 1300));
+  const minTime = new Promise((r) => setTimeout(r, 900));
   const target = { v: 0 };
-  const climb = gsap.to(target, { v: 88, duration: 1.4, ease: 'power2.out', onUpdate: () => { count.textContent = Math.round(Math.max(state.v, target.v)); } });
+  const climb = gsap.to(target, { v: 88, duration: 1.0, ease: 'power2.out', onUpdate: () => { count.textContent = Math.round(Math.max(state.v, target.v)); } });
 
   return Promise.all([ready, minTime]).then(() => new Promise((resolve) => {
     climb.kill();

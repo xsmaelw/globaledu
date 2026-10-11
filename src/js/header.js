@@ -14,7 +14,7 @@ export function initHeader(lenis) {
     const target = hash === '#top' ? 0 : $(hash);
     if (target === null || target === undefined) return;
     if (pick != null) document.dispatchEvent(new CustomEvent('ge:pick', { detail: Number(pick) }));
-    if (lenis) lenis.scrollTo(target, { duration: 1.7, easing: easeExpo, offset: hash === '#contact' ? 0 : 0 });
+    if (lenis) lenis.scrollTo(target, { duration: 1.1, easing: easeExpo, offset: hash === '#contact' ? 0 : 0 });
     else (target === 0 ? window.scrollTo(0, 0) : target.scrollIntoView());
   };
   document.addEventListener('click', (e) => {
@@ -27,18 +27,6 @@ export function initHeader(lenis) {
     else goTo(hash, a.dataset.pick);
     history.replaceState(null, '', hash === '#top' ? location.pathname : hash);
   });
-
-  /* ---- hide on scroll down, show on scroll up ---- */
-  let last = 0;
-  const onScroll = (y) => {
-    hdr.classList.toggle('is-solid', y > 40);
-    if (menuOpen) return;
-    if (y > last + 4 && y > 240) hdr.classList.add('is-hidden');
-    else if (y < last - 4 || y < 240) hdr.classList.remove('is-hidden');
-    last = y;
-  };
-  if (lenis) lenis.on('scroll', ({ scroll }) => onScroll(scroll));
-  else addEventListener('scroll', () => onScroll(scrollY), { passive: true });
 
   /* ---- active section in nav ---- */
   $$('[data-nav]').forEach((link) => {
@@ -55,7 +43,6 @@ export function initHeader(lenis) {
     burger.setAttribute('aria-expanded', 'true');
     burger.querySelector('.burger__label').textContent = 'Yopish';
     menu.classList.add('is-open'); menu.setAttribute('aria-hidden', 'false');
-    hdr.classList.remove('is-hidden');
     lenis?.stop(); document.documentElement.style.overflow = 'hidden';
     gsap.killTweensOf([menu, ...links, ...foot]);
     gsap.fromTo(menu, { clipPath: 'circle(0px at calc(100% - 56px) 36px)' }, { clipPath: 'circle(150% at calc(100% - 56px) 36px)', duration: reduceMotion ? 0 : 0.9, ease: 'expo.inOut' });

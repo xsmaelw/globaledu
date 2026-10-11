@@ -20,7 +20,7 @@ npm run preview  # просмотр собранной версии
 | `index.html` | Вся разметка и тексты, мета-теги, JSON-LD |
 | `src/css/main.css` | Дизайн-система и стили секций |
 | `src/js/sections.js` | Анимации секций (стопка направлений, горизонтальные результаты, маски текста) |
-| `src/js/hero3d.js` | 3D-ленты в hero (шейдер, один draw call на ленту) |
+| `public/video/ribbons.mp4` | Видео-цикл с лентами в hero |
 | `src/js/globe3d.js` | 3D-глобус «Toshkentdan dunyoga» (карта суши — `land-mask.js`) |
 | `src/js/form.js` | Форма: заявки уходят на почту через formsubmit.co |
 | `public/` | Статика: фото, иконки, `og.jpg` |
@@ -30,7 +30,6 @@ npm run preview  # просмотр собранной версии
 
 - **Контакты** — в `index.html` (поиск по `globaleduc@gmail.com` и `+998 91 347 81 79`) и `FORM_EMAIL` в `src/js/form.js`.
 - **Фото команды** — `public/img/alisher.webp`, `public/img/asrorbek.webp` (формат 4:5, ~512×640).
-- **Слова на лентах** — массив `RIBBONS` в `src/js/hero3d.js`.
 - **Города на глобусе** — массив `CITIES` в `src/js/globe3d.js`.
 
 ## Доступность

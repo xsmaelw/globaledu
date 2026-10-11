@@ -17,12 +17,12 @@ export function initCursor() {
     if (e.pointerType !== 'mouse') return;
     if (hidden) { gsap.set([ring, dot], { x: e.clientX, y: e.clientY }); root.style.opacity = 1; hidden = false; }
     rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY);
-    const el = e.target.closest?.('[data-cursor-text],a,button,[data-tilt],[data-res-track]');
+    const el = e.target.closest?.('[data-cursor-text],a,button,[data-res-track]');
     root.classList.remove('is-link', 'is-text');
     if (!el) return;
     const text = el.dataset.cursorText || (el.matches('[data-res-track]') ? 'Surib' : '');
     if (text) { label.textContent = text; root.classList.add('is-text'); }
-    else if (!el.matches('[data-tilt],[data-res-track]')) root.classList.add('is-link');
+    else if (!el.matches('[data-res-track]')) root.classList.add('is-link');
   }, { passive: true });
   document.addEventListener('pointerleave', () => { root.style.opacity = 0; hidden = true; });
   root.style.opacity = 0;

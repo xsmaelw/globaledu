@@ -1,12 +1,12 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { $, $$, finePointer, reduceMotion } from './env.js';
+import { $, $$, reduceMotion } from './env.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /** Callbacks the 3D modules plug into (they are lazy-loaded). */
-export const hooks = { hero: null, heroActive: null, world: null, worldActive: null, worldLoad: null };
+export const hooks = { world: null, worldActive: null, worldLoad: null };
 
 /* ---- helpers --------------------------------------------------------- */
 
@@ -37,13 +37,6 @@ function setupHero() {
     gsap.set(heroIn(), { y: 36, autoAlpha: 0 });
   }
 
-  // Scroll: copy drifts up, the stage pushes in; 3D module gets the progress value.
-  const st = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
-  if (!reduceMotion) {
-    gsap.to('.hero__inner', { yPercent: -16, ease: 'none', scrollTrigger: st });
-    gsap.to('[data-hero-stage]', { scale: 1.1, yPercent: 8, ease: 'none', scrollTrigger: st });
-  }
-  ScrollTrigger.create({ ...st, onUpdate: (s) => hooks.hero?.(s.progress), onToggle: (s) => hooks.heroActive?.(s.isActive) });
 }
 
 export function playHero() {
@@ -65,35 +58,12 @@ function setupManifesto() {
   }
 }
 
-/* ---- DIRECTIONS (sticky stack) ---------------------------------------- */
+/* ---- DIRECTIONS (plain coloured sections) ------------------------------ */
 function setupDirections() {
-  const dirs = $$('[data-dir]');
-  dirs.forEach((dir, i) => {
-    revealLines($('[data-split]', dir), { trigger: dir, start: 'top 72%' });
-    if (!reduceMotion) {
-      gsap.from($$('.dir__rows > div', dir), { y: 34, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.09, scrollTrigger: { trigger: dir, start: 'top 62%', once: true } });
-      gsap.from($$('.btn', dir), { y: 28, autoAlpha: 0, duration: 1, ease: 'expo.out', delay: 0.3, scrollTrigger: { trigger: dir, start: 'top 62%', once: true } });
-      gsap.fromTo($('.dir__num', dir), { yPercent: 14 }, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: dir, start: 'top bottom', end: 'bottom top', scrub: true } });
-      gsap.fromTo($('.dir__art img', dir), { yPercent: 6, scale: 1.04 }, { yPercent: -4, scale: 1, ease: 'none', scrollTrigger: { trigger: dir, start: 'top bottom', end: 'bottom top', scrub: true } });
-      if (i < dirs.length - 1) {
-        const link = { trigger: dirs[i + 1], start: 'top bottom', end: 'top top', scrub: true };
-        gsap.to(dir, { scale: 0.92, ease: 'none', scrollTrigger: link });
-        gsap.to($('[data-veil]', dir), { opacity: 0.55, ease: 'none', scrollTrigger: link });
-      }
-    }
-    // pointer tilt on the artwork
-    const art = $('[data-tilt]', dir);
-    if (art && finePointer && !reduceMotion) {
-      const img = $('img', art);
-      const rx = gsap.quickTo(img, 'rotationX', { duration: 0.8, ease: 'power3' });
-      const ry = gsap.quickTo(img, 'rotationY', { duration: 0.8, ease: 'power3' });
-      art.addEventListener('pointermove', (e) => {
-        const r = art.getBoundingClientRect();
-        ry(((e.clientX - r.left) / r.width - 0.5) * 9);
-        rx(-((e.clientY - r.top) / r.height - 0.5) * 7);
-      });
-      art.addEventListener('pointerleave', () => { rx(0); ry(0); });
-    }
+  $$('[data-dir]').forEach((dir) => {
+    revealLines($('[data-split]', dir), { trigger: dir, start: 'top 75%' });
+    if (reduceMotion) return;
+    gsap.from($$('.dir__rows > div, .btn', dir), { y: 28, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: dir, start: 'top 68%', once: true } });
   });
 }
 
@@ -112,7 +82,7 @@ function setupResults() {
   const tween = gsap.to(track, {
     x: () => -dist(), ease: 'none',
     scrollTrigger: {
-      trigger: section, start: 'top top', end: () => '+=' + dist() * 1.05, pin, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true,
+      trigger: section, start: 'top top', end: () => '+=' + dist() * 0.8, pin, scrub: 0.25, anticipatePin: 1, invalidateOnRefresh: true,
       onUpdate: (s) => {
         bar.parentElement.style.setProperty('--p', s.progress.toFixed(4));
         bar.style.setProperty('--p', s.progress.toFixed(4));
@@ -146,7 +116,7 @@ function setupWorld() {
   ScrollTrigger.create({ trigger: world, start: 'top bottom', end: 'bottom top', onToggle: (s) => hooks.worldActive?.(s.isActive) });
   if (reduceMotion) { hooks.world?.(1); return; }
   ScrollTrigger.create({
-    trigger: world, start: 'top top', end: '+=230%', pin, scrub: true, anticipatePin: 1,
+    trigger: world, start: 'top top', end: '+=130%', pin, scrub: true, anticipatePin: 1,
     onUpdate: (s) => hooks.world?.(s.progress),
   });
   revealLines($('.t1', world), { trigger: world, start: 'top 55%' });

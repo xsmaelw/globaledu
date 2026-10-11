@@ -9,7 +9,7 @@ import './css/main.css';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { $ } from './js/env.js';
+import { $, reduceMotion } from './js/env.js';
 import { initSmooth } from './js/smooth.js';
 import { runPreloader } from './js/preloader.js';
 import { initHeader } from './js/header.js';
@@ -31,18 +31,18 @@ const fontsReady = Promise.all([
   document.fonts.load('400 40px "Great Vibes"'),
 ]).catch(() => {}).then(() => document.fonts.ready);
 
-/* 3D layers are loaded as separate chunks so the first paint stays light. */
-let hero3d = null;
-const heroReady = (async () => {
-  const canvas = $('[data-hero-canvas]');
-  if (!canvas) return;
-  try {
-    const { initHero3D } = await import('./js/hero3d.js');
-    hero3d = await initHero3D({ canvas, hero: $('[data-hero]') });
-    if (hero3d) { hooks.hero = (p) => hero3d.setProgress(p); hooks.heroActive = (v) => hero3d.setActive(v); }
-  } catch (err) { console.warn('[hero3d] disabled:', err); }
-})();
+/* Hero loop: autoplay muted video; resolves when it can play (or after a short timeout). */
+const heroReady = new Promise((resolve) => {
+  const v = $('[data-hero-video]');
+  if (!v) return resolve();
+  if (reduceMotion) { v.removeAttribute('autoplay'); v.pause(); return resolve(); }
+  const done = () => resolve();
+  if (v.readyState >= 3) done(); else v.addEventListener('canplay', done, { once: true });
+  setTimeout(done, 2500);
+  v.play?.().catch(() => {});
+});
 
+/* The globe is a separate chunk, loaded just before its section. */
 let globe = null;
 hooks.worldLoad = async () => {
   if (globe !== null) return;
