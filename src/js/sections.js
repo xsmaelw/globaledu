@@ -14,10 +14,10 @@ export const hooks = { worldActive: null, worldLoad: null };
 function revealLines(el, { trigger = el, start = 'top 96%', delay = 0, stagger = 0.08, duration = 0.95 } = {}) {
   if (!el || reduceMotion) return;
   SplitText.create(el, {
-    type: 'lines', mask: 'lines', autoSplit: true,
+    type: 'lines', mask: 'lines', linesClass: 'ln', autoSplit: true,
     onSplit: (self) => {
       gsap.set(el, { visibility: 'visible' });   // lines start below their mask, so nothing shows early
-      return gsap.from(self.lines, { yPercent: 118, duration, ease: 'expo.out', stagger, delay, scrollTrigger: { trigger, start, once: true } });
+      return gsap.from(self.lines, { yPercent: 135, duration, ease: 'expo.out', stagger, delay, scrollTrigger: { trigger, start, once: true } });
     },
   });
 }
@@ -31,10 +31,10 @@ function setupHero() {
   const title = $('[data-hero-title]');
   if (!reduceMotion) {
     SplitText.create(title, {
-      type: 'lines', mask: 'lines', autoSplit: true,
+      type: 'lines', mask: 'lines', linesClass: 'ln', autoSplit: true,
       onSplit: (self) => {
         gsap.set(title, { visibility: 'visible' });
-        heroTween = gsap.from(self.lines, { yPercent: 118, duration: 1.4, ease: 'expo.out', stagger: 0.11, paused: !heroGo });
+        heroTween = gsap.from(self.lines, { yPercent: 135, duration: 1.4, ease: 'expo.out', stagger: 0.11, paused: !heroGo });
         return heroTween;
       },
     });
@@ -120,7 +120,7 @@ function setupWorld() {
   ScrollTrigger.create({ trigger: world, start: 'top bottom', end: 'bottom top', onToggle: (s) => hooks.worldActive?.(s.isActive) });
   if (reduceMotion) return;
   revealLines($('.t1', world), { trigger: world, start: 'top 70%' });
-  gsap.from($('.t2', world), { clipPath: 'inset(0 100% 0 0)', duration: 1.1, ease: 'expo.inOut', delay: 0.15, scrollTrigger: { trigger: world, start: 'top 70%', once: true } });
+  gsap.from($('.t2', world), { clipPath: 'inset(0 100% -30% 0)', clearProps: 'clipPath', duration: 1.1, ease: 'expo.inOut', delay: 0.15, scrollTrigger: { trigger: world, start: 'top 70%', once: true } });
   revealLines($('.world__lead', world), { trigger: world, start: 'top 60%', delay: 0.25 });
 }
 
