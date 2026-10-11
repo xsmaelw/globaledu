@@ -50,17 +50,23 @@ export function playHero() {
 }
 
 /* ---- MANIFESTO ------------------------------------------------------- */
+// Written in, line by line, as soon as the paragraph enters the screen (no scrubbing): each line is revealed
+// by a soft-edged wipe that travels along it, like ink flowing from a pen, with a slight settle upward.
 function setupManifesto() {
   const text = $('[data-mani-text]');
   if (reduceMotion) return;
-  const sp = SplitText.create(text, { type: 'words', wordsClass: 'w' });
-  gsap.set(text, { visibility: 'visible' });
-  // Words are invisible until scrolled to; they ink in while the paragraph travels up the screen.
-  gsap.fromTo(sp.words, { color: 'rgba(20,20,20,0)' }, {
-    color: 'rgb(20,20,20)', ease: 'none', stagger: 0.1,
-    scrollTrigger: { trigger: text, start: 'top 92%', end: 'bottom 62%', scrub: 0.2 },
+  SplitText.create(text, {
+    type: 'lines', linesClass: 'wl', autoSplit: true,
+    onSplit: (self) => {
+      gsap.set(text, { visibility: 'visible' });
+      gsap.set(self.lines, { '--p': '0%', y: 10 });
+      return gsap.to(self.lines, {
+        '--p': '118%', y: 0, duration: 2.3, ease: 'power1.inOut', stagger: 0.7,
+        scrollTrigger: { trigger: text, start: 'top 94%', once: true },
+      });
+    },
   });
-  gsap.fromTo('.mani__tags li', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.mani__tags', start: 'top 96%', once: true } });
+  gsap.fromTo('.mani__tags li', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'power2.out', stagger: 0.1, delay: 1.2, scrollTrigger: { trigger: text, start: 'top 94%', once: true } });
 }
 
 /* ---- DIRECTIONS (plain coloured sections) ------------------------------ */
@@ -68,7 +74,8 @@ function setupDirections() {
   $$('[data-dir]').forEach((dir) => {
     revealLines($('[data-split]', dir), { trigger: dir, start: 'top 88%' });
     if (reduceMotion) return;
-    gsap.from($$('.dir__rows > div, .btn', dir), { y: 24, autoAlpha: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: dir, start: 'top 82%', once: true } });
+    gsap.from($$('.dir__rows > div', dir), { y: 24, autoAlpha: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: dir, start: 'top 82%', once: true } });
+    gsap.from($$('.btn', dir), { autoAlpha: 0, duration: 0.8, ease: 'power2.out', delay: 0.25, scrollTrigger: { trigger: dir, start: 'top 82%', once: true } });
   });
 }
 
@@ -146,7 +153,9 @@ function setupContact() {
   revealLines(title, { trigger: '.contact', start: 'top 80%' });
   if (reduceMotion) return;
   gsap.from('.contact__title em', { rotation: 7, duration: 1.4, ease: 'elastic.out(1, .5)', scrollTrigger: { trigger: '.contact', start: 'top 55%', once: true } });
-  gsap.from(['.contact__sub', ...$$('.crow li'), ...$$('.form > *')], { y: 36, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.contact__grid', start: 'top 92%', once: true } });
+  const trig = { trigger: '.contact__grid', start: 'top 92%', once: true };
+  gsap.from(['.contact__sub', ...$$('.crow li'), ...$$('.form > :not(.btn)')], { y: 30, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: trig });
+  gsap.from('.form > .btn', { autoAlpha: 0, duration: 0.9, ease: 'power2.out', delay: 0.4, scrollTrigger: trig });   // fade only: its transform belongs to the magnetic effect
 }
 
 function setupFooter() {

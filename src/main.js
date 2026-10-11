@@ -13,11 +13,9 @@ import { $, reduceMotion } from './js/env.js';
 import { initSmooth } from './js/smooth.js';
 import { runPreloader } from './js/preloader.js';
 import { initHeader } from './js/header.js';
-import { initCursor } from './js/cursor.js';
 import { initMagnetic } from './js/magnetic.js';
 import { initForm } from './js/form.js';
 import { initPrivacy } from './js/priv.js';
-import { initGlass } from './js/glass.js';
 import { initSections, playHero, hooks } from './js/sections.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -46,7 +44,10 @@ const heroReady = new Promise((resolve) => {
   const kick = () => { if (v.paused) v.play?.().catch(() => {}); };
   ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'].forEach((ev) => addEventListener(ev, kick, { passive: true, once: ev !== 'scroll' }));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
-  v.addEventListener('pause', () => { if (!document.hidden && !reduceMotion) setTimeout(kick, 300); });
+  // Save decoding work: the loop only runs while the hero is on screen.
+  let heroOn = true;
+  new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; if (heroOn) kick(); else v.pause(); }).observe(v);
+  v.addEventListener('pause', () => { if (heroOn && !document.hidden && !reduceMotion) setTimeout(kick, 300); });
 });
 
 /* Moving gradient backgrounds: loaded as a separate chunk once the first coloured section is near the viewport. */
@@ -83,8 +84,6 @@ hooks.worldLoad = async () => {
 
 fontsReady.then(() => {
   initHeader(lenis);
-  initGlass();
-  initCursor();
   initMagnetic();
   initForm(lenis);
   initPrivacy(lenis);

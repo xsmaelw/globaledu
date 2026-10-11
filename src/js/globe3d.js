@@ -180,7 +180,7 @@ export async function initGlobe({ canvas, pin, list }) {
     const r = canvas.getBoundingClientRect();
     view.w = Math.max(1, r.width); view.h = Math.max(1, r.height);
     view.narrow = view.w < 760 || view.w / view.h < 0.9;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
     renderer.setPixelRatio(dpr); renderer.setSize(view.w, view.h, false);
     camera.aspect = view.w / view.h;
     camera.position.set(0, 0, view.narrow ? 6.2 : 5.1);

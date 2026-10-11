@@ -22,8 +22,7 @@ npm run preview  # просмотр собранной версии
 | `src/js/sections.js` | Анимации секций (стопка направлений, горизонтальные результаты, маски текста) |
 | `public/video/ribbons.mp4` | Видео-цикл с лентами в hero |
 | `src/js/globe3d.js` | 3D-глобус «Toshkentdan dunyoga» (карта суши — `land-mask.js`) |
-| `src/js/gradient.js` | Движущиеся градиентные фоны цветных секций (порт шейдера ShaderGradient, MIT, без React) |
-| `src/js/glass.js` | Шапка в стиле liquid glass: живое преломление через SVG-фильтр (Chrome/Edge), матовое стекло в остальных |
+| `src/js/gradient.js` | Движущиеся шейдерные фоны цветных секций: у каждой свой узор (пиксели, волны, изолинии, пузыри, полутон, шёлк). Шёлк — порт ShaderGradient (MIT) без React |
 | `src/js/form.js` | Форма: заявки уходят на почту через formsubmit.co |
 | `public/` | Статика: фото, иконки, `og.jpg` |
 | `scripts/gen-land-mask.mjs` | Разовая генерация карты суши для глобуса |
@@ -32,7 +31,7 @@ npm run preview  # просмотр собранной версии
 
 - **Контакты** — в `index.html` (поиск по `globaleduc@gmail.com` и `+998 91 347 81 79`) и `FORM_EMAIL` в `src/js/form.js`.
 - **Фото команды** — `public/img/alisher.webp`, `public/img/asrorbek.webp` (формат 4:5, ~512×640).
-- **Цвета градиентов** — атрибут `data-gradient="основной,светлый,глубокий"` у секции в `index.html`.
+- **Цвета и узор фона секции** — атрибуты `data-gradient="основной,светлый,глубокий"` и `data-gradient-type="pixel|ripples|lines|bubbles|halftone|silk"` у секции в `index.html`.
 - **Города на глобусе** — массив `CITIES` в `src/js/globe3d.js`.
 
 ## Доступность
@@ -43,4 +42,4 @@ npm run preview  # просмотр собранной версии
 ## Благодарности
 
 - Градиенты: шейдер и идея [ShaderGradient](https://github.com/ruucm/shadergradient) (MIT, © ruucm).
-- Стеклянная шапка: принцип преломления у кромки по мотивам [liquid-glass-js](https://github.com/dashersw/liquid-glass-js) (MIT, © Armagan Amcalar).
+- Стеклянная шапка: внешний вид (матовое стекло, блик кромки) по мотивам [liquid-glass-js](https://github.com/dashersw/liquid-glass-js) (MIT, © Armagan Amcalar), реализован на чистом CSS.

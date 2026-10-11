@@ -38,15 +38,6 @@
   <script type="module" src="/src/main.js"></script>
 </head>
 <body class="is-loading">
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <defs>
-      <filter id="lg-filter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-        <feImage id="lg-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map"/>
-        <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="soft"/>
-        <feDisplacementMap in="soft" in2="map" scale="44" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-    </defs>
-  </svg>
   <a class="skip" href="#main">Mazmunga oʻtish</a>
 
   <!-- Preloader -->
@@ -93,17 +84,14 @@
     </div>
   </div>
 
-  <div class="cursor" data-cursor aria-hidden="true"><i class="cursor__dot"></i><i class="cursor__ring"><span></span></i></div>
-  <div class="grain" aria-hidden="true"></div>
-
   <main id="main">
     <!-- HERO -->
     <section class="hero" id="top" data-hero>
       <div class="hero__stage" data-hero-stage>
         <div class="hero__media">
           <video class="hero__video" data-hero-video autoplay muted loop playsinline preload="auto" poster="/img/hero-poster.webp" aria-hidden="true" tabindex="-1">
-            <source src="/video/ribbons.webm" type="video/webm; codecs=vp9">
             <source src="/video/ribbons.mp4" type="video/mp4">
+            <source src="/video/ribbons.webm" type="video/webm; codecs=vp9">
           </video>
         </div>
       </div>
@@ -134,7 +122,7 @@
 
     <!-- DIRECTIONS (sticky stack) -->
     <section class="dirs" id="directions" data-dirs aria-label="Yoʻnalishlar">
-      <article class="dir" data-dir data-gradient="#8A3FFC,#B07CFF,#4A1FD0" style="--bg:#8A3FFC;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
+      <article class="dir" data-dir data-gradient="#8A3FFC,#B07CFF,#4A1FD0" data-gradient-type="pixel" style="--bg:#8A3FFC;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="eyebrow">+ (Taʼlim)</p>
@@ -150,7 +138,7 @@
         </div>
       </article>
 
-      <article class="dir" data-dir data-gradient="#7A0E1E,#B8243F,#47051A" style="--bg:#7A0E1E;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
+      <article class="dir" data-dir data-gradient="#7A0E1E,#B8243F,#47051A" data-gradient-type="ripples" style="--bg:#7A0E1E;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="eyebrow">+ (Hamkorlik)</p>
@@ -166,7 +154,7 @@
         </div>
       </article>
 
-      <article class="dir" data-dir data-gradient="#FF5B1F,#FF9A4D,#E03A00" style="--bg:#FF5B1F;--fg:#111111;--soft:rgba(17,17,17,.2)">
+      <article class="dir" data-dir data-gradient="#FF5B1F,#FF9A4D,#E03A00" data-gradient-type="lines" style="--bg:#FF5B1F;--fg:#111111;--soft:rgba(17,17,17,.2)">
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="eyebrow">+ (Imtihonlar)</p>
@@ -182,7 +170,7 @@
         </div>
       </article>
 
-      <article class="dir" data-dir data-gradient="#2D4BFF,#6482FF,#1A2FD0" style="--bg:#2D4BFF;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
+      <article class="dir" data-dir data-gradient="#2D4BFF,#6482FF,#1A2FD0" data-gradient-type="bubbles" style="--bg:#2D4BFF;--fg:#FFFFFF;--soft:rgba(255,255,255,.22)">
         <div class="dir__in wrap">
           <div class="dir__text">
             <p class="eyebrow">+ (Xorijda taʼlim)</p>
@@ -201,7 +189,7 @@
 
     <!-- RESULTS (horizontal) -->
     <section class="res" id="results" data-res>
-      <div class="res__pin" data-res-pin data-gradient="#FF0A6C,#FF6AA5,#C8004F">
+      <div class="res__pin" data-res-pin data-gradient="#FF0A6C,#FF6AA5,#C8004F" data-gradient-type="halftone">
         <header class="res__head wrap">
           <p class="eyebrow">+ (Natijalar)</p>
           <h2 class="res__title" data-split>Imtihon kuni — shunchaki <em>bir kun</em></h2>
@@ -255,7 +243,7 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="contact" id="contact" data-contact data-gradient="#7A0E1E,#B8243F,#47051A">
+    <section class="contact" id="contact" data-contact data-gradient="#7A0E1E,#B8243F,#47051A" data-gradient-type="silk">
       <div class="wrap">
         <p class="eyebrow">+ (Aloqa)</p>
         <h2 class="contact__title" data-split>Keling, <em>gaplashamiz</em></h2>
@@ -263,9 +251,9 @@
           <div class="contact__side">
             <p class="contact__sub">Narxlar va shartlar — soʻrov boʻyicha. Elektron pochta yoki telefon orqali murojaat qiling, bir ish kuni ichida javob beramiz.</p>
             <ul class="crow">
-              <li><a href="mailto:globaleduc@gmail.com" data-cursor-text="Yozish"><span>Email</span><b>globaleduc@gmail.com</b></a></li>
-              <li><a href="tel:+998913478179" data-cursor-text="Qoʻngʻiroq"><span>Telefon</span><b>+998 91 347 81 79</b></a></li>
-              <li><a href="https://t.me/markaz_uz" target="_blank" rel="noopener" data-cursor-text="Ochish"><span>Telegram</span><b>@markaz_uz</b></a></li>
+              <li><a href="mailto:globaleduc@gmail.com"><span>Email</span><b>globaleduc@gmail.com</b></a></li>
+              <li><a href="tel:+998913478179"><span>Telefon</span><b>+998 91 347 81 79</b></a></li>
+              <li><a href="https://t.me/markaz_uz" target="_blank" rel="noopener"><span>Telegram</span><b>@markaz_uz</b></a></li>
               <li><div><span>Manzil</span><b>Toshkent, Oʻzbekiston</b></div></li>
             </ul>
           </div>
