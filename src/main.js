@@ -17,6 +17,7 @@ import { initMagnetic } from './js/magnetic.js';
 import { initForm } from './js/form.js';
 import { initPrivacy } from './js/priv.js';
 import { initTiltedGrid } from './js/tilted-grid.js';
+import { initSpotlight } from './js/spotlight.js';
 import { initPolaroid } from './js/polaroid.js';
 import { initSections, playHero, hooks } from './js/sections.js';
 
@@ -87,6 +88,7 @@ fontsReady.then(() => {
   }
   const pl = $('[data-pl]');
   if (pl) initPolaroid(pl, { reduced: reduceMotion });
+  initSpotlight(reduceMotion);
   initMagnetic();
   initForm(lenis);
   initPrivacy(lenis);
