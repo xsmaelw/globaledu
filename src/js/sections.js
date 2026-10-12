@@ -114,14 +114,7 @@ function setupResults() {
   fade($('.res__sub', section), { trigger: section, start: 'top 75%', delay: 0.2 });
   if (reduceMotion) return;
   $$('[data-rcard]', section).forEach((card, i) => {
-    const st = $('[data-stamp]', card);
-    const base = parseFloat(getComputedStyle(st).getPropertyValue('--sr')) || -6;
-    gsap.set(st, { rotation: base + 14, scale: 2.4, autoAlpha: 0 });
-    gsap.timeline({ scrollTrigger: { trigger: card, start: 'top 82%', once: true }, delay: i * 0.08 })
-      .from(card, { autoAlpha: 0, y: 40, duration: 1.4, ease: 'power2.out' })
-      .to(st, { scale: 1, rotation: base, autoAlpha: 1, duration: 0.45, ease: 'power4.in' }, '>-0.2')
-      .to(card, { y: 5, duration: 0.07, ease: 'power2.out' }, '>-0.02')
-      .to(card, { y: 0, duration: 0.5, ease: 'elastic.out(1, .4)' });
+    gsap.from(card, { autoAlpha: 0, y: 40, duration: 1.5, ease: 'power2.out', delay: i * 0.08, scrollTrigger: { trigger: card, start: 'top 85%', once: true } });
   });
 }
 

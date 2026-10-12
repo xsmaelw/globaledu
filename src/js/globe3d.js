@@ -16,7 +16,7 @@ const HOME = { code: 'TAS', name: 'Toshkent', lat: 41.3, lon: 69.24 };
 const CITIES = [
   { code: 'DEL', name: 'Delhi', lat: 28.6, lon: 77.2 }, { code: 'DXB', name: 'Dubay', lat: 25.2, lon: 55.3 },
   { code: 'PEK', name: 'Pekin', lat: 39.9, lon: 116.4 }, { code: 'SEL', name: 'Seul', lat: 37.57, lon: 126.98 },
-  { code: 'IST', name: 'Istanbul', lat: 41.0, lon: 28.98 }, { code: 'MOW', name: 'Moskva', lat: 55.75, lon: 37.6 },
+  { code: 'IST', name: 'Istanbul', lat: 41.0, lon: 28.98 },
   { code: 'BER', name: 'Berlin', lat: 52.5, lon: 13.4 }, { code: 'LON', name: 'London', lat: 51.5, lon: -0.12 },
 ];
 
