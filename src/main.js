@@ -16,7 +16,6 @@ import { initHeader } from './js/header.js';
 import { initMagnetic } from './js/magnetic.js';
 import { initForm } from './js/form.js';
 import { initPrivacy } from './js/priv.js';
-import { initTiltedGrid } from './js/tilted-grid.js';
 import { initSpotlight } from './js/spotlight.js';
 import { initPolaroid } from './js/polaroid.js';
 import { initSections, playHero, hooks } from './js/sections.js';
@@ -66,26 +65,8 @@ hooks.worldLoad = async () => {
   }
 };
 
-/** The light spilling from both sides of the hero band: new colours every ~1.7 s (CSS transitions the registered colour props). */
-function glowCycle(root) {
-  const P = ['#ff2d6f', '#ffb000', '#c6f432', '#27d3ff', '#7a5cff', '#ff6a00', '#19e6a0', '#ff3df0', '#2f6bff'];
-  let on = true, i = Math.floor(Math.random() * P.length);
-  new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(root);
-  const pick = () => P[(i = (i + 1 + Math.floor(Math.random() * (P.length - 2))) % P.length)];
-  const set = () => { for (const k of ['--c1', '--c2', '--c3', '--c4']) root.style.setProperty(k, pick()); };
-  set();
-  if (reduceMotion) return;
-  setInterval(() => { if (on && !document.hidden) set(); }, 1700);
-}
-
 fontsReady.then(() => {
   initHeader(lenis);
-  const tg = $('[data-tg]');
-  if (tg) {
-    const COUNTRIES = [['uk', 'Buyuk Britaniya'], ['us', 'AQSh'], ['it', 'Italiya'], ['de', 'Germaniya'], ['ca', 'Kanada'], ['au', 'Avstraliya'], ['fr', 'Fransiya'], ['kr', 'Janubiy Koreya'], ['jp', 'Yaponiya'], ['tr', 'Turkiya']];
-    initTiltedGrid(tg, { images: COUNTRIES.map(([c, alt]) => ({ src: `/img/countries/${c}.webp`, alt })), speed: 4.5, tileHeight: 26, axis: 55, curve: 46, gap: 7, fade: 20, paused: reduceMotion });
-    glowCycle(tg);
-  }
   const pl = $('[data-pl]');
   if (pl) initPolaroid(pl, { reduced: reduceMotion });
   initSpotlight(reduceMotion);

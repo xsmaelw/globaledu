@@ -30,7 +30,7 @@ export function initPolaroid(root, { autoplay = true, reduced = false, interval 
   function measure() {
     const r = stage.getBoundingClientRect();
     W = r.width; H = r.height;
-    pw = clamp(W * 0.3, 168, 270);
+    pw = clamp(W * 0.28, 150, 236);
     step = Math.max(pw * 1.14, (W + pw * 2 + 40) / N);       // enough prints to always cover the line
     sag = clamp(H * 0.09, 22, 64);
     top = clamp(H * 0.07, 18, 44);

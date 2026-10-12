@@ -185,23 +185,6 @@ em { font-style: normal; }
 .hero__sub { font-size: clamp(15px, 1.15vw, 18px); font-weight: 300; line-height: 1.5; max-width: 38ch; }
 .hero__cta { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
 
-/* ---------- Curved country band (see src/js/tilted-grid.js) ---------- */
-.tg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.tg__band { position: absolute; inset: 0; transition: opacity .6s ease; }
-.tg__tile { position: absolute; transform-style: preserve-3d; will-change: transform; }
-.tg__slice { position: absolute; top: 0; overflow: hidden; background-color: #E4E4E0; background-image: var(--img); background-repeat: no-repeat; }
-.tg__slice.is-first { border-radius: 3px 0 0 3px; }
-.tg__slice.is-last { border-radius: 0 3px 3px 0; }
-@property --c1 { syntax: '<color>'; inherits: true; initial-value: #ff2d6f; }
-@property --c2 { syntax: '<color>'; inherits: true; initial-value: #ffb000; }
-@property --c3 { syntax: '<color>'; inherits: true; initial-value: #27d3ff; }
-@property --c4 { syntax: '<color>'; inherits: true; initial-value: #7a5cff; }
-.tg { transition: --c1 1.5s linear, --c2 1.5s linear, --c3 1.5s linear, --c4 1.5s linear; }
-/* coloured light on the band's own ends only (not the page behind): thin, tied to the row's height */
-.tg__glow { position: absolute; top: calc(55% - 17cqh); height: 34cqh; width: 7%; pointer-events: none; }
-.tg__glow--l { left: 0; background: radial-gradient(ellipse 100% 62% at 0 50%, var(--c1), transparent 100%); }
-.tg__glow--r { right: 0; background: radial-gradient(ellipse 100% 62% at 100% 50%, var(--c3), transparent 100%); }
-
 /* ==========================================================================
    MANIFESTO
    ========================================================================== */
@@ -256,11 +239,10 @@ em { font-style: normal; }
 /* ==========================================================================
    POLAROIDS — prints on a string (see src/js/polaroid.js)
    ========================================================================== */
-.pl { position: relative; background: #E6E4DE; z-index: var(--z-content); padding: clamp(90px, 14vh, 170px) 0 clamp(60px, 9vh, 110px); overflow: clip; outline-offset: -6px; }
-.pl__head { display: flex; flex-direction: column; gap: 14px; }
-.pl__title { font-weight: 300; font-size: clamp(32px, 4.7vw, 78px); line-height: 1.02; letter-spacing: -.05em; max-width: 14em; }
-.pl__title em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.02em; color: var(--burgundy); }
-.pl__stage { --pw: 240px; position: relative; height: calc(var(--pw) * 1.22 + 96px); margin-top: clamp(10px, 3vh, 40px); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.hero__inner { pointer-events: none; }
+.hero__head, .hero__foot { pointer-events: auto; }
+.hero__inner > .pl { pointer-events: auto; width: 100vw; margin-inline: calc(50% - 50vw); position: relative; outline-offset: -6px; }
+.pl__stage { --pw: 240px; position: relative; height: calc(var(--pw) * 1.22 + 80px); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .pl__stage.is-drag { cursor: grabbing; }
 .pl__string { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .pl__string path { stroke: #2a2a28; stroke-width: 1.6; }
@@ -270,11 +252,8 @@ em { font-style: normal; }
 .pl__print figcaption { padding: calc(var(--pw) * .06) 0 calc(var(--pw) * .075); text-align: center; font: italic 400 clamp(15px, calc(var(--pw) * .085), 22px)/1.1 var(--serif); color: #2a2a28; }
 /* the clothes-peg */
 .pl__peg { position: absolute; left: 50%; top: -15px; width: 12px; height: 34px; margin-left: -6px; background: linear-gradient(90deg, #b88a55, #d9ad76 45%, #b88a55); clip-path: polygon(0 0,100% 0,100% 78%,50% 100%,0 78%); z-index: 4; pointer-events: none; box-shadow: 0 2px 3px rgba(0,0,0,.3); }
-.pl__bar { display: flex; align-items: center; gap: 20px; margin-top: clamp(10px, 3vh, 36px); }
-.pl__cap { font: 500 clamp(18px, 1.6vw, 26px)/1 var(--sans); letter-spacing: -.03em; margin-right: auto; }
-.pl__count { opacity: .6; }
-.pl__arrows { display: flex; gap: 10px; }
-@media (max-width: 520px) { .pl__bar { flex-wrap: wrap; } .pl__cap { width: 100%; } .pl__count { margin-right: auto; } }
+.pl__arrows { position: absolute; right: var(--gutter); bottom: 0; display: flex; gap: 10px; z-index: 12; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* ==========================================================================
    WORLD — globe
