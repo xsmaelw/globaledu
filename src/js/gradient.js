@@ -239,7 +239,7 @@ export function initGradients() {
   let running = false, raf = 0;
   const loop = (now) => {
     const dt = Math.min(0.1, (now - clock.last) / 1000); clock.last = now; clock.t += dt; clock.acc += dt;
-    if (clock.acc >= 1 / 30) { clock.acc = 0; for (const it of items) if (it.visible) draw(it, clock.t); }   // 30 fps is plenty for slow gradients
+    if (clock.acc >= 1 / 30) { clock.acc = 0; for (const it of items) if (it.visible && !it.host.hasAttribute('data-idle')) draw(it, clock.t); }   // 30 fps is plenty for slow gradients
     raf = running ? requestAnimationFrame(loop) : 0;
   };
   function sync() {
