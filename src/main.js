@@ -16,6 +16,7 @@ import { initHeader } from './js/header.js';
 import { initMagnetic } from './js/magnetic.js';
 import { initForm } from './js/form.js';
 import { initPrivacy } from './js/priv.js';
+import { initTiltedGrid } from './js/tilted-grid.js';
 import { initSections, playHero, hooks } from './js/sections.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -65,6 +66,11 @@ hooks.worldLoad = async () => {
 
 fontsReady.then(() => {
   initHeader(lenis);
+  const tg = $('[data-tg]');
+  if (tg) {
+    const COUNTRIES = [['uk', 'Buyuk Britaniya'], ['us', 'AQSh'], ['it', 'Italiya'], ['de', 'Germaniya'], ['ca', 'Kanada'], ['au', 'Avstraliya'], ['fr', 'Fransiya'], ['kr', 'Janubiy Koreya'], ['jp', 'Yaponiya'], ['tr', 'Turkiya']];
+    initTiltedGrid(tg, { images: COUNTRIES.map(([c, alt]) => ({ src: `/img/countries/${c}.webp`, alt })), speed: 4.5, tileHeight: 26, axis: 55, curve: 74, gap: 7, fade: 14, paused: reduceMotion });
+  }
   initMagnetic();
   initForm(lenis);
   initPrivacy(lenis);

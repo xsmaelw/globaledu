@@ -173,16 +173,24 @@ em { font-style: normal; }
 /* ==========================================================================
    HERO
    ========================================================================== */
-.hero { position: relative; min-height: 86svh; display: flex; flex-direction: column; justify-content: flex-end; overflow: clip; background: var(--paper); }
-.hero__inner { position: relative; z-index: var(--z-content); padding: calc(var(--hdr-h) + 14vh) var(--gutter) clamp(40px, 8vh, 96px); max-width: 1760px; width: 100%; margin-inline: auto; display: flex; flex-direction: column; gap: clamp(16px, 2vw, 28px); }
-.hero__title { font-weight: 300; font-size: clamp(32px, 4.7vw, 78px); line-height: 1.04; letter-spacing: -.045em; max-width: 15ch; }
+.hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; overflow: clip; background: var(--paper); }
+.hero__inner { position: relative; z-index: var(--z-content); flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center;
+  padding: calc(var(--hdr-h) + 6vh) var(--gutter) clamp(28px, 6vh, 64px); max-width: 1760px; width: 100%; margin-inline: auto; gap: 24px; }
+.hero__head { display: flex; flex-direction: column; align-items: center; gap: clamp(12px, 1.6vw, 22px); }
+.hero__title { font-weight: 300; font-size: clamp(32px, 4.7vw, 78px); line-height: 1.04; letter-spacing: -.045em; max-width: 16ch; }
 .hero__title em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.02em; color: var(--burgundy); }
-.hero__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; }
-.hero__sub { font-size: clamp(15px, 1.15vw, 18px); font-weight: 300; line-height: 1.5; max-width: 34ch; }
-.hero__cta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
-.hero__rail { position: absolute; z-index: var(--z-content); right: var(--gutter); top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.hero__rail i { width: 1px; height: 56px; background: currentColor; transform-origin: top; animation: rail 2.2s var(--ease-io) infinite; }
-@keyframes rail { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+.hero__foot { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2vh, 22px); }
+.hero__sub { font-size: clamp(15px, 1.15vw, 18px); font-weight: 300; line-height: 1.5; max-width: 38ch; }
+.hero__cta { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
+
+/* ---------- Curved country band (see src/js/tilted-grid.js) ---------- */
+.tg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.tg__band { position: absolute; inset: 0; transition: opacity .6s ease; }
+.tg__tile { position: absolute; transform-style: preserve-3d; will-change: transform; }
+.tg__slice { position: absolute; top: 0; overflow: hidden; background-color: #E4E4E0; background-image: var(--img); background-repeat: no-repeat; }
+.tg__slice.is-first { border-radius: 12px 0 0 12px; }
+.tg__slice.is-last { border-radius: 0 12px 12px 0; }
+.tg.is-off .tg__tile, .tg.is-static .tg__tile { animation-play-state: paused; }
 
 /* ==========================================================================
    MANIFESTO
@@ -345,9 +353,8 @@ em { font-style: normal; }
   .hdr__pill { grid-template-columns: 1fr auto; padding-left: 16px; }
   .nav, .hdr__cta { display: none; }
   .burger { display: inline-flex; }
-  .hero__rail { display: none; }
-  .hero__inner { padding-top: calc(var(--hdr-h) + 10vh); }
-  .hero__title { max-width: 14ch; }
+  .hero__inner { padding-top: calc(var(--hdr-h) + 4vh); }
+  .hero__title { max-width: 13ch; }
   .dir__in { grid-template-columns: 1fr; gap: 20px; padding-block: 44px 48px; }
   .dir__text { gap: 14px; }
   .dir__art { order: -1; }
@@ -369,7 +376,6 @@ em { font-style: normal; }
 
 /* ---------- Reduced motion / transparency / contrast ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .hero__rail i { animation: none; transform: none; }
   *, *::before, *::after { scroll-behavior: auto !important; }
   .person__img { clip-path: none; }
   .stamp { opacity: 1 !important; }
